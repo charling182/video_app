@@ -6,15 +6,17 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
+  // Text,
   useColorScheme,
   View,
+  Image,
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -24,75 +26,115 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Swiper from 'react-native-swiper';
+const { width } = Dimensions.get('window');
+import SwiperTest from './components/swiper-test';
+import AppNavigationContainer from './components/AppNavigationContainer';
+import DrawerNavigationContainer from './components/DrawerNavigationContainer';
+import TabNavigationContainer from './components/TabNavigationContainer';
+import { MD3LightTheme as DefaultTheme, PaperProvider, Avatar, Button, Card, Text, useTheme } from 'react-native-paper';
+
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
+function Section({ children, title }: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <PaperProvider>
+      <View style={styles.sectionContainer}>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: isDarkMode ? Colors.white : Colors.black,
+            },
+          ]}>
+          {title}
+        </Text>
+        <Text
+          style={[
+            styles.sectionDescription,
+            {
+              color: isDarkMode ? Colors.light : Colors.dark,
+            },
+          ]}>
+          {children}
+        </Text>
+      </View>
+    </PaperProvider>
   );
 }
 
+const theme = {
+  ...DefaultTheme,
+  version: 3,
+};
+const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
+    flex: 1,
+    height: '100%',
+    width: '100%',
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <PaperProvider theme={theme}>
+      <SafeAreaView style={backgroundStyle}>
+        <Card>
+          <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} />
+          <Card.Content>
+            <Text variant="titleLarge">Card title</Text>
+            <Text variant="bodyMedium">Card content</Text>
+          </Card.Content>
+          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Actions>
+            <Button>Cancel</Button>
+            <Button>Ok</Button>
+          </Card.Actions>
+        </Card>
+        {/* <StatusBar hidden /> */}
+        <Text>Hello, world!</Text>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        {/* <TabNavigationContainer /> */}
+        {/* <DrawerNavigationContainer /> */}
+        {/* <AppNavigationContainer /> */}
+        {/* <Image source={require('./static/image/background.jpg')} style={{ width: '100%', height: 200 }} /> */}
+        {/* <SwiperTest /> */}
+        {/* 
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={backgroundStyle}>
+            <Header />
+            <View
+              style={{
+                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+              }}>
+              <Section title="Step One">
+                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+                screen and then come back to see your edits.
+              </Section>
+              <Section title="See Your Changes">
+                <ReloadInstructions />
+              </Section>
+              <Section title="Debug">
+                <DebugInstructions />
+              </Section>
+              <Section title="Learn More">
+                Read the docs to discover what to do next:
+              </Section>
+              <LearnMoreLinks />
+            </View>
+          </ScrollView> */}
+      </SafeAreaView>
+    </PaperProvider>
   );
 }
 
